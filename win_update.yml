@@ -9,8 +9,9 @@
           - CriticalUpdates
           - DefinitionUpdates
         reboot: yes
+      register: update_result
 
     - name: Reboot the server if required
       win_reboot:
         reboot_timeout: 3600
-      when: reboot_required.result == true
+      when: update_result.reboot_required
