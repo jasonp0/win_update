@@ -1,6 +1,6 @@
 ---
 - name: Update Windows Host
-  hosts: windows
+  hosts: all
   tasks:
     - name: Install all available Windows updates
       win_updates:
