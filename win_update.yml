@@ -1,17 +1,15 @@
 ---
-- name: Update Windows Host
+- name: Enable Active Directory Users and Computers Snap-in
   hosts: all
   tasks:
-    - name: Install all available Windows updates
-      win_updates:
-        category_names:
-          - SecurityUpdates
-          - CriticalUpdates
-          - DefinitionUpdates
-        reboot: yes
-      register: update_result
+    - name: Ensure the 'RSAT: Active Directory Domain Services and Lightweight Directory Tools' feature is installed
+      win_feature:
+        name: RSAT-AD-Tools
+        state: present
+        include_management_tools: yes
+      register: rsat_installation
 
     - name: Reboot the server if required
       win_reboot:
         reboot_timeout: 3600
-      when: update_result.reboot_required
+      when: rsat_installation.reboot_required
