@@ -1,6 +1,6 @@
 ---
 - name: Enable Active Directory Users and Computers Snap-in
-  hosts: windows
+  hosts: all
   tasks:
     - name: "Ensure the 'RSAT: Active Directory Domain Services and Lightweight Directory Tools' feature is installed"
       win_feature:
