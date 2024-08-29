@@ -16,7 +16,7 @@
           - SecurityUpdates
           - CriticalUpdates
         reboot: yes
-      when: update_check.updates.count > 0
+      when: update_check.updates | length > 0
       register: update_result
 
     - name: Reboot the server if required
