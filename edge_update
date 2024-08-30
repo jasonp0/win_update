@@ -1,0 +1,16 @@
+---
+- name: Update Microsoft Edge
+  hosts: windows
+  tasks:
+    - name: Ensure Microsoft Edge is up to date
+      win_package:
+        name: Microsoft Edge
+        path: https://msedge.sf.dl.delivery.mp.microsoft.com/filestreamingservice/files/48f5bde7-c0c6-4b7f-b1fd-54164d37be3a/MicrosoftEdgeSetup.exe
+        state: latest
+        arguments: /silent /install
+      register: edge_result
+
+    - name: Reboot the server if required
+      win_reboot:
+        reboot_timeout: 3600
+      when: edge_result.reboot_required
