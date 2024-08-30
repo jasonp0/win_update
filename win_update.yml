@@ -1,25 +1,29 @@
 ---
-- name: Check and Install Windows Updates
+- name: Install All Available Windows Updates
   hosts: all
   tasks:
-    - name: Check for available Windows updates
+    - name: Install all available Windows updates
       win_updates:
         category_names:
-          - SecurityUpdates
-          - CriticalUpdates
-        state: searched
-      register: update_check
-
-    - name: Install available Windows updates
-      win_updates:
-        category_names:
-          - SecurityUpdates
-          - CriticalUpdates
-        reboot: yes
-      when: update_check.updates | length > 0
+          - SecurityUpdates        # Security-related updates that address vulnerabilities.
+          - CriticalUpdates        # Critical updates that are essential for system stability.
+          - Updates                # General updates that include feature improvements and bug fixes.
+          - FeaturePacks           # New features and functionality added to Windows.
+          - UpdateRollups          # Bundled updates that include multiple patches.
+          - ServicePacks           # Cumulative sets of updates and hotfixes.
+          - DefinitionUpdates      # Updates for antivirus and anti-malware definitions (e.g., Windows Defender).
+          - DriverUpdates          # Updates for hardware drivers to ensure compatibility and performance.
+          - Upgrades               # Upgrades to newer versions of Windows or major components.
+          - Tools                  # Tools and utilities updates, such as the Windows Malicious Software Removal Tool (MSRT).
+          - Guidance               # Recommended updates that offer additional guidance and improvements.
+          - Application            # Updates for installed applications, which may include .NET Framework updates.
+          - Connectors             # Updates for software connectors that link different software systems.
+          - DeveloperKits          # Updates for developer tools and SDKs, including updates for .NET Framework and other development-related components.
+      reboot: yes
       register: update_result
 
     - name: Reboot the server if required
       win_reboot:
         reboot_timeout: 3600
       when: update_result.reboot_required
+
