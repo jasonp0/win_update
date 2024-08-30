@@ -19,11 +19,13 @@
           - Application            # Updates for installed applications, which may include .NET Framework updates.
           - Connectors             # Updates for software connectors that link different software systems.
           - DeveloperKits          # Updates for developer tools and SDKs, including updates for .NET Framework and other development-related components.
-      reboot: yes
       register: update_result
+      notify: Reboot if required
 
-    - name: Reboot the server if required
+  handlers:
+    - name: Reboot if required
       win_reboot:
         reboot_timeout: 3600
       when: update_result.reboot_required
+
 
